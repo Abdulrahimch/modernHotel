@@ -40,22 +40,22 @@ router.post('/users', async (req, res) => {
 router.post('/login', urlencodedParser ,async(req, res) => {
     try{
         //ToDO Entering req.body.hotelName after adding search bar to Login page.
+        console.log('/login is hitted')
         console.log(req.body)
         // const user = await User.findByCredentials(req.body.email, req.body.password);
         const user = await User.findByCredentials( req.body.email, req.body.password );
+        console.log('the user is: ', user)
         const token = await user.generateAuthToken();
         res.cookie(`jwt`, token);
-        // res.status(200).json({
-        //     success: {
-        //         user: {
-        //             id: user._id,
-        //             email: user.email,
-        //             account: user.account
-        //         }
-        //     }
-        // })
-        res.status(200).json({ token:token });
-
+        res.status(200).json({
+            success: {
+                user: {
+                    id: user._id,
+                    email: user.email,
+                    account: user.account
+                }
+            }
+        })
     } catch(e) {
         console.log(e);
         res.status(400).send(e);
